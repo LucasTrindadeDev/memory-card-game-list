@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 
 import SearchGame from "./components/SearchGame";
 import SearchResults from "./components/SearchResults";
+import MyGames from "./components/MyGames";
 
 import "./styles/main.css";
 
 import { TwitchGame } from "./types";
 
+import savedGames from "./saved-games.json";
+
 function App() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<TwitchGame[]>([]);
 
   useEffect(() => {
@@ -15,11 +19,16 @@ function App() {
   }, [searchResults]);
 
   return (
-    <div className="w-[100vw] min-h-[100vh] flex">
-      <main className="w-full h-full bg-zinc-800">
-        <SearchGame setSearchResults={setSearchResults} />
+    <div className="flex">
+      <main className="w-screen min-h-screen bg-zinc-800">
+        <SearchGame
+          setSearchResults={setSearchResults}
+          setIsLoading={setIsLoading}
+        />
 
-        {searchResults.length > 0 && <SearchResults gameList={searchResults} />}
+        <SearchResults isLoading={isLoading} gameList={searchResults} />
+
+        <MyGames gameList={savedGames} />
       </main>
     </div>
   );

@@ -10,12 +10,18 @@ type FormData = {
 
 function SearchGame({
   setSearchResults,
+  setIsLoading,
 }: {
   setSearchResults: React.Dispatch<React.SetStateAction<TwitchGame[]>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { register, handleSubmit } = useForm<FormData>();
 
   const onSubmit = handleSubmit((data) => {
+    if (data.searchQuery === "") return;
+
+    setIsLoading(true);
+
     const config = {
       headers: {
         Authorization: `Bearer ${import.meta.env.VITE_TWITCH_ACCESS_TOKEN}`,
@@ -30,6 +36,7 @@ function SearchGame({
       .get("https://api.twitch.tv/helix/search/categories", config)
       .then((response) => {
         setSearchResults(response.data.data);
+        setIsLoading(false);
       });
   });
 
@@ -39,7 +46,7 @@ function SearchGame({
         <label className="mb-2 text-white">Procurar jogo</label>
         <div className="relative">
           <input
-            className="w-full h-8 rounded px-2 py-1 pr-10"
+            className="w-full h-8 rounded px-2 py-1 pr-10 focus:outline-0"
             placeholder="Nome do jogo"
             {...register("searchQuery")}
           />

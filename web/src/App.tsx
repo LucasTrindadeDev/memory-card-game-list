@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
+import * as Dialog from "@radix-ui/react-alert-dialog";
 
 import SearchGame from "./components/SearchGame";
 import SearchResults from "./components/SearchResults";
 import MyGames from "./components/MyGames";
+import SaveGameDialog from "./components/SaveGameDialog";
 
 import "./styles/main.css";
 
 import { TwitchGame } from "./types";
 
-import savedGames from "./saved-games.json";
+import savedGames from "./saved-games";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -26,7 +28,11 @@ function App() {
           setIsLoading={setIsLoading}
         />
 
-        <SearchResults isLoading={isLoading} gameList={searchResults} />
+        <Dialog.Root>
+          <SearchResults isLoading={isLoading} gameList={searchResults} />
+
+          <SaveGameDialog />
+        </Dialog.Root>
 
         <MyGames gameList={savedGames} />
       </main>

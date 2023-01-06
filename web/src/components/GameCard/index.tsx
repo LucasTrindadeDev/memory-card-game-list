@@ -1,23 +1,19 @@
 import { PlusCircle } from "phosphor-react";
+import * as Dialog from "@radix-ui/react-alert-dialog";
 
 import { TwitchGame } from "../../types";
 
-function GameCard({ game, saved }: { game: TwitchGame; saved: boolean }) {
-  function handleAddGame(game: TwitchGame): void {
-    console.log(game.name);
-  }
+function GameCard({ game }: { game: TwitchGame }) {
+  // function handleAddGame(game: TwitchGame): void {
+  //   console.log(game.name);
+  // }
 
   return (
     <div className="rounded border-zinc-900 border-4 overflow-hidden flex flex-col relative">
       {/* Botão de adicionar aos jogos salvos */}
-      {!saved && (
-        <button
-          onClick={() => handleAddGame(game)}
-          className="w-8 h-8 absolute top-[-2px] right-[-2px] z-[1] flex justify-center items-center bg-gray-600 rounded-bl-lg"
-        >
-          <PlusCircle className="text-white" size={24} />
-        </button>
-      )}
+      <Dialog.Trigger className="w-8 h-8 absolute top-[-2px] right-[-2px] z-[1] flex justify-center items-center bg-gray-600 rounded-bl-lg">
+        <PlusCircle className="text-white" size={24} />
+      </Dialog.Trigger>
 
       {/* Capa do jogo */}
       <div className="w-full aspect-square relative overflow-hidden">

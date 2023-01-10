@@ -1,31 +1,44 @@
+import { useState } from "react";
 import * as Dialog from "@radix-ui/react-alert-dialog";
-import * as RadioGroup from "@radix-ui/react-radio-group";
 
-import { TwitchGame } from "../../types";
+import GameStatus from "./GameStatus";
+import PlatformSelect from "./PlatformSelect";
 
 function SavedGameDialog() {
+  const [gameStatus, setGameStatus] = useState<string>("quero-jogar");
+  const [gamePlatform, setGamePlatform] = useState<string>("");
+
+  function handleSaveGame(): void {
+    console.log(gameStatus, gamePlatform);
+  }
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/80 inset-0 fixed z-[2]" />
-      <Dialog.Content className="w-4/5 h-1/2 fixed z-[2] bg-[#2A2634] py-6 px-4 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-lg shadow-black/25">
+      <Dialog.Content className="w-4/5 h-fit-content fixed z-[2] bg-[#2A2634] py-6 px-4 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-lg shadow-black/25 flex flex-col justify-between">
+        {/* Título do modal */}
         <Dialog.Title className="font-semibold text-2xl">
           Salvar jogo
         </Dialog.Title>
 
-        <div>
-          <RadioGroup.Root>
-            <RadioGroup.Item value="Quero jogar" id="wishlist">
-              <RadioGroup.Indicator />
-            </RadioGroup.Item>
+        {/* Status do jogo */}
+        <GameStatus updateStatus={setGameStatus} />
 
-            <RadioGroup.Item value="Jogando" id="playing">
-              <RadioGroup.Indicator />
-            </RadioGroup.Item>
+        {/* Select da plataforma */}
+        <PlatformSelect updatePlatform={setGamePlatform} />
 
-            <RadioGroup.Item value="Finalizado" id="finished">
-              <RadioGroup.Indicator />
-            </RadioGroup.Item>
-          </RadioGroup.Root>
+        {/* Botões de Fechar e Salvar */}
+        <div className="flex items-center justify-end gap-4 mt-10">
+          <Dialog.Cancel className="bg-gray-500 py-1 px-3 rounded flex justify-center items-center">
+            Fechar
+          </Dialog.Cancel>
+          <button
+            className="bg-violet-600 py-1 px-3 rounded flex justify-center items-center"
+            type="submit"
+            onClick={handleSaveGame}
+          >
+            Salvar
+          </button>
         </div>
       </Dialog.Content>
     </Dialog.Portal>

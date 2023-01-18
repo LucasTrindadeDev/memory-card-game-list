@@ -15,6 +15,7 @@ import savedGames from "./saved-games";
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<TwitchGame[]>([]);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   useEffect(() => {
     console.log(searchResults);
@@ -28,10 +29,10 @@ function App() {
           setIsLoading={setIsLoading}
         />
 
-        <Dialog.Root>
+        <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>
           <SearchResults isLoading={isLoading} gameList={searchResults} />
 
-          <SaveGameDialog />
+          <SaveGameDialog setOpenDialog={setOpenDialog} />
         </Dialog.Root>
 
         <MyGames gameList={savedGames} />

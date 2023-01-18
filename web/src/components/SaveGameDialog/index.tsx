@@ -4,12 +4,16 @@ import * as Dialog from "@radix-ui/react-alert-dialog";
 import GameStatus from "./GameStatus";
 import PlatformSelect from "./PlatformSelect";
 
-function SavedGameDialog() {
-  const [gameStatus, setGameStatus] = useState<string>("quero-jogar");
+function SavedGameDialog({ setOpenDialog }: { setOpenDialog: React.Dispatch<React.SetStateAction<boolean>> }) {
+  const [gameStatus, setGameStatus] = useState<string>("");
   const [gamePlatform, setGamePlatform] = useState<string>("");
 
   function handleSaveGame(): void {
     console.log(gameStatus, gamePlatform);
+
+    if (gameStatus === "") return;
+
+    setOpenDialog(false);
   }
 
   return (

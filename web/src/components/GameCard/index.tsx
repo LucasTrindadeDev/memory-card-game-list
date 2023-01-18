@@ -4,9 +4,6 @@ import * as Dialog from "@radix-ui/react-alert-dialog";
 import { TwitchGame } from "../../types";
 
 function GameCard({ game }: { game: TwitchGame }) {
-  // function handleAddGame(game: TwitchGame): void {
-  //   console.log(game.name);
-  // }
 
   return (
     <div className="rounded border-zinc-900 border-4 overflow-hidden flex flex-col relative">

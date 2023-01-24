@@ -14,6 +14,7 @@ function GameStatus({
   return (
     <RadioGroup.Root
       onValueChange={(value) => updateStatus(value)}
+      defaultValue="quero-jogar"
       className="mt-6"
     >
       <h1 className="text-xl mb-4">Status do jogo</h1>

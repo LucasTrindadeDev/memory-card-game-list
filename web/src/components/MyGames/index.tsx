@@ -16,7 +16,7 @@ function MyGames({ gameList }: { gameList: SavedGame[] }) {
   // );
 
   return (
-    <div className="mt-8 px-4">
+    <div className="mt-8 pl-4">
       <h1 className="text-white font-bold text-2xl">My Games</h1>
       {/* <ul ref={sliderRef} className="keen-slider my-4">
         {gameList.map((game: SavedGame) => (

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-alert-dialog";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import { TwitchGame } from "../../types";
 
@@ -18,7 +18,7 @@ function SavedGameDialog({
   const [gameStatus, setGameStatus] = useState<string>("quero-jogar");
   const [gamePlatform, setGamePlatform] = useState<string>("");
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   async function handleSaveGame(): Promise<void> {
     if (game === undefined) return;
@@ -39,7 +39,7 @@ function SavedGameDialog({
 
       setOpenDialog(false);
       console.log("Jogo salvo com sucesso!");
-      navigate("/saved-games");
+      // navigate("/saved-games");
     } catch (err) {
       console.log(err);
       console.log("Erro ao salvar jogo :(");

@@ -4,10 +4,7 @@ export interface TwitchGame {
   box_art_url: string;
 }
 
-export interface SavedGame {
-  id: string;
-  name: string;
-  cover: string;
+export interface SavedGame extends TwitchGame {
   platform: string;
   status: string;
 }

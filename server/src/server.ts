@@ -20,7 +20,7 @@ app.post("/user/:id/save-game", async (req, res) => {
     data: {
       id: body.id,
       name: body.name,
-      cover: body.cover,
+      box_art_url: body.box_art_url,
       status: body.status,
       platform: body.platform,
       userId,
@@ -37,7 +37,7 @@ app.get("/user/:id/saved-games", async (req, res) => {
     select: {
       id: true,
       name: true,
-      cover: true,
+      box_art_url: true,
       status: true,
       platform: true,
     },

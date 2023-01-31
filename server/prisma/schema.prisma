@@ -18,11 +18,11 @@ model User {
 }
 
 model Game {
-  id       String  @id
-  name     String
-  cover    String?
-  status   String
-  platform String?
-  userId   String
-  user     User    @relation(fields: [userId], references: [id])
+  id          String  @id
+  name        String
+  box_art_url String?
+  status      String
+  platform    String?
+  userId      String
+  user        User    @relation(fields: [userId], references: [id])
 }

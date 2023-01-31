@@ -1,6 +1,6 @@
 import * as Tabs from "@radix-ui/react-tabs";
 
-import SavedGameCard from "../SavedGameCard";
+import GameCard from "../GameCard";
 
 import { SavedGame } from "../../types";
 
@@ -43,7 +43,7 @@ function MyGames({ gameList }: { gameList: SavedGame[] }) {
                     return game.status === status;
                   })
                   .map((game: SavedGame) => (
-                    <SavedGameCard key={game.id} game={game} />
+                    <GameCard key={game.id} game={game} />
                   ))}
               </ul>
             </Tabs.Content>

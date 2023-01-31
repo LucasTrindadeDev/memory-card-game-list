@@ -7,11 +7,9 @@ import { TwitchGame } from "../../types";
 function SearchResults({
   gameList,
   isLoading,
-  setSelectedGame,
 }: {
   gameList: TwitchGame[];
   isLoading: boolean;
-  setSelectedGame: React.Dispatch<React.SetStateAction<TwitchGame | undefined>>;
 }) {
   return (
     <div>
@@ -23,11 +21,7 @@ function SearchResults({
         <>
           <ul className="my-4 px-4 grid grid-cols-2 gap-4 lg:grid-cols-6">
             {gameList.map((game: TwitchGame) => (
-              <GameCard
-                key={game.id}
-                game={game}
-                setSelectedGame={setSelectedGame}
-              />
+              <GameCard key={game.id} game={game} />
             ))}
           </ul>
         </>

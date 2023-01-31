@@ -29,15 +29,17 @@ function SavedGameDialog({
       const response = await axios.post(
         `http://localhost:3333/user/${userId}/save-game`,
         {
-          id: game.id,
+          id: `${game.id}-${gamePlatform}`,
           name: game.name,
-          cover: game.box_art_url,
+          box_art_url: game.box_art_url,
           status: gameStatus,
           platform: gamePlatform,
         }
       );
 
       setOpenDialog(false);
+      setGameStatus("quero-jogar");
+      setGamePlatform("");
       console.log("Jogo salvo com sucesso!");
       // navigate("/saved-games");
     } catch (err) {

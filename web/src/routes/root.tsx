@@ -16,7 +16,7 @@ function Root() {
   return (
     <div className="w-full h-screen flex flex-col bg-zinc-800">
       <div className="w-full grow overflow-auto">
-        <SelectedGameContext.Provider value={{ setSelectedGame }}>
+        <SelectedGameContext.Provider value={{ selectedGame, setSelectedGame }}>
           <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>
             <Outlet />
             <SavedGameDialog

@@ -37,7 +37,7 @@ function MyGames({ gameList }: { gameList: SavedGame[] }) {
         {statusList.map((status: string) => {
           return (
             <Tabs.Content value={status} key={status}>
-              <ul className="my-4 grid grid-cols-2">
+              <ul className="my-4 grid grid-cols-2 gap-3">
                 {gameList
                   .filter((game: SavedGame) => {
                     return game.status === status;

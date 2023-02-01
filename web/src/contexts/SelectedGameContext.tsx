@@ -11,5 +11,3 @@ export const SelectedGameContext = createContext<SelectedGame>({
   selectedGame: undefined,
   setSelectedGame: () => {},
 });
-
-export const useSelectedGameContext = useContext(SelectedGameContext);

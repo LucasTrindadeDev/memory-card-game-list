@@ -2,8 +2,10 @@ import React from "react";
 import * as Select from "@radix-ui/react-select";
 
 function PlatformSelect({
+  platform,
   updatePlatform,
 }: {
+  platform: string;
   updatePlatform: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const SelectItem = ({ name, value }: { name: string; value: string }) => {
@@ -25,7 +27,10 @@ function PlatformSelect({
     <div className="mt-10">
       <h1 className="text-xl mb-4">Plataforma</h1>
 
-      <Select.Root onValueChange={(value) => updatePlatform(value)}>
+      <Select.Root
+        defaultValue={platform}
+        onValueChange={(value) => updatePlatform(value)}
+      >
         <Select.Trigger
           className="flex items-center rounded py-3 px-4 h-6 w-full gap-1 bg-violet-500 hover:bg-violet-700 shadow-sm focus:shadow-lg placeholder:text-violet-100 placeholder:font-normal text-white font-semibold"
           aria-label="Platform"

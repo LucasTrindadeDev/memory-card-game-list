@@ -13,7 +13,7 @@ function GameCard({ game }: { game: TwitchGame | SavedGame }) {
   return (
     <div className="rounded border-zinc-900 border-4 overflow-hidden flex flex-col relative">
       {"status" in game ? (
-        <Dialog.Trigger onClick={() => console.log(game)}>
+        <Dialog.Trigger onClick={() => setSelectedGame(game)}>
           <GameStatus gameStatus={game.status} />
         </Dialog.Trigger>
       ) : (

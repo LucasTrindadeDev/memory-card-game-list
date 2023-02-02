@@ -19,7 +19,7 @@ function GameStatus({
       defaultValue={status}
       className="mt-6"
     >
-      <h1 className="text-xl mb-4">Status do jogo</h1>
+      <h1 className="text-xl mb-4">Status</h1>
 
       <div className="flex items-center">
         <RadioGroup.Item

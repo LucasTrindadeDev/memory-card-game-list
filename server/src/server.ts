@@ -52,6 +52,26 @@ app.get("/user/:id/saved-games", async (req, res) => {
   return res.status(200).json(games);
 });
 
+app.get("/user/:userId/saved-games/:id", async (req, res) => {
+  const userId = req.params.userId;
+  const id = req.params.id;
+
+  const game = await prisma.game.findMany({
+    select: {
+      id: true,
+      name: true,
+      status: true,
+      platform: true,
+    },
+    where: {
+      id,
+      userId,
+    },
+  });
+
+  return res.status(200).json(game);
+});
+
 app.put("/user/:userId/saved-games/:id", async (req, res) => {
   const userId = req.params.userId;
   const id = req.params.id;

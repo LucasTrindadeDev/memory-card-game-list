@@ -3,9 +3,11 @@ import * as Select from "@radix-ui/react-select";
 
 function PlatformSelect({
   platform,
+  disabled,
   updatePlatform,
 }: {
   platform: string;
+  disabled: boolean;
   updatePlatform: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const SelectItem = ({ name, value }: { name: string; value: string }) => {
@@ -16,9 +18,6 @@ function PlatformSelect({
         key={value}
       >
         <Select.ItemText>{name}</Select.ItemText>
-        {/* <Select.ItemIndicator className="SelectItemIndicator">
-          <CheckIcon />
-        </Select.ItemIndicator> */}
       </Select.Item>
     );
   };
@@ -30,6 +29,7 @@ function PlatformSelect({
       <Select.Root
         defaultValue={platform}
         onValueChange={(value) => updatePlatform(value)}
+        disabled={disabled}
       >
         <Select.Trigger
           className="flex items-center rounded py-3 px-4 h-6 w-full gap-1 bg-violet-500 hover:bg-violet-700 shadow-sm focus:shadow-lg placeholder:text-violet-100 placeholder:font-normal text-white font-semibold"

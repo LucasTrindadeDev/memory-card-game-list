@@ -1,30 +1,30 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { MagnifyingGlassPlus, GameController, User } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-alert-dialog";
 
 import { TwitchGame, SavedGame } from "../types";
-import { SelectedGameContext } from "../contexts/SelectedGameContext";
+import { AppContext } from "../contexts/AppContext";
 import SavedGameDialog from "../components/SaveGameDialog";
 
 function Root() {
   const [selectedGame, setSelectedGame] = useState<
     TwitchGame | SavedGame | undefined
   >();
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   return (
     <div className="w-full h-screen flex flex-col bg-zinc-800">
       <div className="w-full grow overflow-auto">
-        <SelectedGameContext.Provider value={{ selectedGame, setSelectedGame }}>
+        <AppContext.Provider
+          value={{ selectedGame, setSelectedGame, openDialog, setOpenDialog }}
+        >
           <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>
             <Outlet />
-            <SavedGameDialog
-              game={selectedGame}
-              setOpenDialog={setOpenDialog}
-            />
+            <SavedGameDialog game={selectedGame} />
           </Dialog.Root>
-        </SelectedGameContext.Provider>
+        </AppContext.Provider>
       </div>
 
       <div className="w-full h-10 shrink-0 grid grid-flow-col bg-slate-500">

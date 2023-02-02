@@ -1,33 +1,39 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-alert-dialog";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
 
-import { SelectedGameContext } from "../../contexts/SelectedGameContext";
-import { TwitchGame } from "../../types";
+import { AppContext } from "../../contexts/AppContext";
+import { TwitchGame, SavedGame } from "../../types";
 
 import GameStatus from "./GameStatus";
 import PlatformSelect from "./PlatformSelect";
 
 function SavedGameDialog({
   game,
-  setOpenDialog,
 }: {
-  game: TwitchGame | undefined;
-  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  game: TwitchGame | SavedGame | undefined;
 }) {
-  const { selectedGame } = useContext(SelectedGameContext);
+  const { selectedGame, setSelectedGame } = useContext(AppContext);
+  const { setOpenDialog } = useContext(AppContext);
+
   const edit = selectedGame && "status" in selectedGame;
-  const [gameStatus, setGameStatus] = useState<string>(
-    edit ? selectedGame.status : "quero-jogar"
-  );
-  const [gamePlatform, setGamePlatform] = useState<string>(
-    edit ? selectedGame.platform : ""
-  );
 
-  console.log(selectedGame, edit, gameStatus, gamePlatform);
+  const [gameStatus, setGameStatus] = useState<string>("quero-jogar");
+  const [gamePlatform, setGamePlatform] = useState<string>("");
 
-  // const navigate = useNavigate();
+  useEffect(() => {
+    if (selectedGame && "status" in selectedGame) {
+      setGameStatus(selectedGame.status);
+      setGamePlatform(selectedGame.platform);
+    }
+  }, [selectedGame]);
+
+  const resetDialog = (): void => {
+    setOpenDialog(false);
+    setSelectedGame(undefined);
+    setGameStatus("quero-jogar");
+    setGamePlatform("");
+  };
 
   async function handleSaveGame(): Promise<void> {
     if (game === undefined) return;
@@ -45,12 +51,8 @@ function SavedGameDialog({
           platform: gamePlatform,
         }
       );
-
-      setOpenDialog(false);
-      setGameStatus("quero-jogar");
-      setGamePlatform("");
+      resetDialog();
       console.log("Jogo salvo com sucesso!");
-      // navigate("/saved-games");
     } catch (err) {
       console.log(err);
       console.log("Erro ao salvar jogo :(");
@@ -70,14 +72,29 @@ function SavedGameDialog({
         }
       );
 
-      setOpenDialog(false);
-      setGameStatus("quero-jogar");
-      setGamePlatform("");
+      resetDialog();
       console.log("Jogo editado com sucesso!");
-      // navigate("/saved-games");
     } catch (err) {
       console.log(err);
       console.log("Erro ao editar jogo :(");
+    }
+  }
+
+  async function handleDeleteGame(): Promise<void> {
+    if (game === undefined) return;
+
+    const userId = "18f882fc-5e4e-4b78-adb3-8104814ec8e4";
+
+    try {
+      const response = await axios.delete(
+        `http://localhost:3333/user/${userId}/saved-games/${game.id}`
+      );
+
+      resetDialog();
+      console.log("Jogo deletado com sucesso!");
+    } catch (err) {
+      console.log(err);
+      console.log("Erro ao deletar jogo :(");
     }
   }
 
@@ -94,10 +111,21 @@ function SavedGameDialog({
         <PlatformSelect
           platform={gamePlatform}
           updatePlatform={setGamePlatform}
+          disabled={edit ? true : false}
         />
 
         <div className="flex items-center justify-end gap-4 mt-10">
-          <Dialog.Cancel className="bg-gray-500 py-1 px-3 rounded flex justify-center items-center">
+          <button
+            type="button"
+            onClick={() => handleDeleteGame()}
+            className="bg-red-500 py-1 px-3 rounded flex justify-center items-center"
+          >
+            Deletar jogo
+          </button>
+          <Dialog.Cancel
+            onClick={() => resetDialog()}
+            className="bg-gray-500 py-1 px-3 rounded flex justify-center items-center"
+          >
             Fechar
           </Dialog.Cancel>
           <button

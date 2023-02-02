@@ -1,25 +1,38 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { PlusCircle } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-alert-dialog";
 
-import { SelectedGameContext } from "../../contexts/SelectedGameContext";
+import { AppContext } from "../../contexts/AppContext";
 import { TwitchGame, SavedGame } from "../../types";
 import GameStatus from "../GameStatus";
 
 function GameCard({ game }: { game: TwitchGame | SavedGame }) {
-  const { setSelectedGame } = useContext(SelectedGameContext);
+  const { setSelectedGame } = useContext(AppContext);
+  const { setOpenDialog } = useContext(AppContext);
+
+  function handleSelectedGame(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    game: TwitchGame | SavedGame
+  ) {
+    e.preventDefault();
+    setSelectedGame(game);
+
+    setTimeout(() => {
+      setOpenDialog(true), 1000;
+    });
+  }
 
   return (
     <div className="rounded border-zinc-900 border-4 overflow-hidden flex flex-col relative">
       {"status" in game ? (
-        <Dialog.Trigger onClick={() => setSelectedGame(game)}>
+        <Dialog.Trigger onClick={(e) => handleSelectedGame(e, game)}>
           <GameStatus gameStatus={game.status} />
         </Dialog.Trigger>
       ) : (
         <Dialog.Trigger
           className="w-8 h-8 absolute top-[-2px] right-[-2px] z-[1] flex justify-center items-center bg-gray-600 rounded-bl-lg"
-          onClick={() => setSelectedGame(game)}
+          onClick={(e) => handleSelectedGame(e, game)}
         >
           <PlusCircle className="text-white" size={24} />
         </Dialog.Trigger>

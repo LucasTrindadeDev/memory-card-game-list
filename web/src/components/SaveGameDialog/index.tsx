@@ -53,9 +53,12 @@ function SavedGameDialog({
       );
       resetDialog();
       console.log("Jogo salvo com sucesso!");
-    } catch (err) {
-      console.log(err);
-      console.log("Erro ao salvar jogo :(");
+    } catch (err: any) {
+      if (err.response.data === "GAME ALREADY SAVED") {
+        console.log("Jogo já salvo!");
+      } else {
+        console.log("Erro ao salvar jogo :(");
+      }
     }
   }
 
@@ -115,19 +118,23 @@ function SavedGameDialog({
         />
 
         <div className="flex items-center justify-end gap-4 mt-10">
-          <button
-            type="button"
-            onClick={() => handleDeleteGame()}
-            className="bg-red-500 py-1 px-3 rounded flex justify-center items-center"
-          >
-            Deletar jogo
-          </button>
+          {edit && (
+            <button
+              type="button"
+              onClick={() => handleDeleteGame()}
+              className="bg-red-500 py-1 px-3 rounded flex justify-center items-center"
+            >
+              Deletar jogo
+            </button>
+          )}
+
           <Dialog.Cancel
             onClick={() => resetDialog()}
             className="bg-gray-500 py-1 px-3 rounded flex justify-center items-center"
           >
             Fechar
           </Dialog.Cancel>
+
           <button
             className="bg-violet-600 py-1 px-3 rounded flex justify-center items-center"
             type="submit"

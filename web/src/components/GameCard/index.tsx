@@ -1,11 +1,10 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
-import { PlusCircle } from "phosphor-react";
+import { PlusCircle, PencilSimple } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-alert-dialog";
 
 import { AppContext } from "../../contexts/AppContext";
 import { TwitchGame, SavedGame } from "../../types";
-import GameStatus from "../GameStatus";
 
 function GameCard({ game }: { game: TwitchGame | SavedGame }) {
   const { setSelectedGame } = useContext(AppContext);
@@ -27,7 +26,11 @@ function GameCard({ game }: { game: TwitchGame | SavedGame }) {
     <div className="rounded border-zinc-900 border-4 overflow-hidden flex flex-col relative">
       {"status" in game ? (
         <Dialog.Trigger onClick={(e) => handleSelectedGame(e, game)}>
-          <GameStatus gameStatus={game.status} />
+          <div
+            className={`w-8 h-8 absolute top-[-2px] right-[-2px] z-[1] flex justify-center items-center bg-violet-500 rounded-bl-lg`}
+          >
+            <PencilSimple className="text-white" size={24} />
+          </div>
         </Dialog.Trigger>
       ) : (
         <Dialog.Trigger

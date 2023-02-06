@@ -18,11 +18,12 @@ model User {
 }
 
 model Game {
-  id          String  @id
+  id          String   @id
   name        String
   box_art_url String?
   status      String
   platform    String?
   userId      String
-  user        User    @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
 }

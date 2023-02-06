@@ -13,8 +13,18 @@ const prisma = new PrismaClient({
 });
 
 app.post("/user/:id/save-game", async (req, res) => {
-  const userId = req.params.id;
+  const userId: string = req.params.id;
   const body: any = req.body;
+  const id: string = body.id;
+
+  const gameAlreadySaved = await prisma.game.findMany({
+    where: {
+      id,
+      userId,
+    },
+  });
+
+  if (gameAlreadySaved) return res.status(401).send("GAME ALREADY SAVED");
 
   const game = await prisma.game.create({
     data: {
@@ -30,8 +40,9 @@ app.post("/user/:id/save-game", async (req, res) => {
   return res.status(200).json(game);
 });
 
-app.get("/user/:id/saved-games", async (req, res) => {
+app.post("/user/:id/saved-games", async (req, res) => {
   const userId = req.params.id;
+  const status = req.body.status;
 
   const games = await prisma.game.findMany({
     select: {
@@ -43,9 +54,10 @@ app.get("/user/:id/saved-games", async (req, res) => {
     },
     where: {
       userId,
+      status,
     },
     orderBy: {
-      status: "asc",
+      name: "asc",
     },
   });
 

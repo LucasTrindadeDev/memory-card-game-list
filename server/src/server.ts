@@ -17,10 +17,12 @@ app.post("/user/:id/save-game", async (req, res) => {
   const body: any = req.body;
   const id: string = body.id;
 
-  const gameAlreadySaved = await prisma.game.findMany({
+  const gameAlreadySaved = await prisma.game.findUnique({
     where: {
-      id,
-      userId,
+      id_userId: {
+        id: id,
+        userId: userId,
+      },
     },
   });
 

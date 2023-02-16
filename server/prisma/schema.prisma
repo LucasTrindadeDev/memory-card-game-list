@@ -18,7 +18,7 @@ model User {
 }
 
 model Game {
-  id          String   @id
+  id          String
   name        String
   box_art_url String?
   status      String
@@ -26,4 +26,6 @@ model Game {
   userId      String
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id])
+
+  @@id([id, userId])
 }

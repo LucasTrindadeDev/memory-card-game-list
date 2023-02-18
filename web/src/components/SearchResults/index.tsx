@@ -19,7 +19,7 @@ function SearchResults({
         </div>
       ) : (
         <>
-          <ul className="my-4 px-4 grid grid-cols-2 gap-4 lg:grid-cols-6">
+          <ul className="my-4 px-4 grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
             {gameList.map((game: TwitchGame) => (
               <GameCard key={game.id} game={game} />
             ))}

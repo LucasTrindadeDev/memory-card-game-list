@@ -1,5 +1,6 @@
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import {
+  Books,
   GameController,
   ShoppingCart,
   CircleWavyCheck,
@@ -32,6 +33,20 @@ function GameStatus({
         <ShoppingCart size={24} className="text-sky-500 ml-2" />
         <label htmlFor="wishlist" className="text-xl text-sky-500 ml-1">
           Quero jogar
+        </label>
+      </div>
+
+      <div className="flex items-center mt-4">
+        <RadioGroup.Item
+          value="biblioteca"
+          id="library"
+          className="bg-gray-300 w-5 h-5 rounded-full shadow-sm"
+        >
+          <RadioGroup.Indicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-2 after:h-2 after:rounded-full after:bg-black" />
+        </RadioGroup.Item>
+        <Books size={24} className="text-gray-300 ml-2" />
+        <label htmlFor="wishlist" className="text-xl text-gray-300 ml-1">
+          Na biblioteca
         </label>
       </div>
 

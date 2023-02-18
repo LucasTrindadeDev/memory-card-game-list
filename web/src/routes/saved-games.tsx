@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import axios from "axios";
 import {
+  Books,
   GameController,
   ShoppingCart,
   CircleWavyCheck,
   Trophy,
-  IconProps,
 } from "phosphor-react";
 
 import GameCard from "../components/GameCard";
@@ -25,6 +25,11 @@ function SavedGames() {
       name: "quero-jogar",
       label: "Quero jogar",
       element: <ShoppingCart className="text-white" size={24} />,
+    },
+    {
+      name: "biblioteca",
+      label: "Na biblioteca",
+      element: <Books className="text-white" size={24} />,
     },
     {
       name: "jogando",
@@ -98,7 +103,7 @@ function SavedGames() {
         {statusList.map((status: Status) => {
           return (
             <Tabs.Content value={status.name} key={status.name}>
-              <ul className="my-4 grid grid-cols-2 gap-3">
+              <ul className="my-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
                 {gameList
                   .filter((game: SavedGame) => {
                     return game.status === status.name;

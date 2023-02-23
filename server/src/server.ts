@@ -118,4 +118,25 @@ app.delete("/user/:userId/saved-games/:id", async (req, res) => {
   return res.status(200).json(deleteGame);
 });
 
+app.get("/user/:id/platforms", async (req, res) => {
+  const userId = req.params.id;
+
+  const games = await prisma.game.findMany({
+    select: {
+      name: true,
+      platform: true,
+    },
+    where: {
+      userId,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  const platforms = [...new Set(games.map((item) => item.platform))];
+
+  return res.status(200).json(platforms);
+});
+
 app.listen(3333);

@@ -8,3 +8,9 @@ export interface SavedGame extends TwitchGame {
   platform: string;
   status: string;
 }
+
+export interface Status {
+  name: string;
+  label: string;
+  element: JSX.Element;
+}

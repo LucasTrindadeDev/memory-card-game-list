@@ -7,7 +7,6 @@ import "./styles/main.css";
 import Root from "./routes/root";
 import Home from "./routes/home";
 import Search from "./routes/search";
-import SavedGames from "./routes/saved-games";
 import Profile from "./routes/profile";
 
 const router = createBrowserRouter([
@@ -22,10 +21,6 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
-      },
-      {
-        path: "/saved-games",
-        element: <SavedGames />,
       },
       {
         path: "/profile",

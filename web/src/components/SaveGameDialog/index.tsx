@@ -5,8 +5,9 @@ import axios from "axios";
 import { AppContext } from "../../contexts/AppContext";
 import { TwitchGame, SavedGame } from "../../types";
 
-import GameStatus from "./GameStatus";
-import PlatformSelect from "./PlatformSelect";
+import GameStatus from "./game-status";
+import PlatformSelect from "./platform-select";
+import ToastMessage from "./toast-message";
 
 function SavedGameDialog({
   game,
@@ -15,6 +16,9 @@ function SavedGameDialog({
 }) {
   const { selectedGame, setSelectedGame } = useContext(AppContext);
   const { setOpenDialog } = useContext(AppContext);
+  const [openToast, setOpenToast] = useState(false);
+  const [toastTitle, setToastTitle] = useState("");
+  const [toastStatus, setToastStatus] = useState("");
 
   const edit = selectedGame && "status" in selectedGame;
 
@@ -35,6 +39,13 @@ function SavedGameDialog({
     setGamePlatform("");
   };
 
+  const handleOpenToast = (title: string, status: string): void => {
+    resetDialog();
+    setToastTitle(title);
+    setToastStatus(status);
+    setOpenToast(true);
+  };
+
   async function handleSaveGame(): Promise<void> {
     if (game === undefined) return;
 
@@ -51,13 +62,12 @@ function SavedGameDialog({
           platform: gamePlatform,
         }
       );
-      resetDialog();
-      console.log("Jogo salvo com sucesso!");
+      handleOpenToast("Jogo salvo com sucesso!", "success");
     } catch (err: any) {
       if (err.response.data === "GAME ALREADY SAVED") {
-        console.log("Jogo já salvo!");
+        handleOpenToast("Jogo já salvo!", "error");
       } else {
-        console.log("Erro ao salvar jogo :(");
+        handleOpenToast("Erro ao salvar jogo :(", "error");
       }
     }
   }
@@ -74,12 +84,10 @@ function SavedGameDialog({
           status: gameStatus,
         }
       );
-
-      resetDialog();
-      console.log("Jogo editado com sucesso!");
+      handleOpenToast("Jogo editado com sucesso!", "success");
     } catch (err) {
       console.log(err);
-      console.log("Erro ao editar jogo :(");
+      handleOpenToast("Erro ao editar jogo :(", "error");
     }
   }
 
@@ -92,59 +100,66 @@ function SavedGameDialog({
       const response = await axios.delete(
         `http://localhost:3333/user/${userId}/saved-games/${game.id}`
       );
-
-      resetDialog();
-      console.log("Jogo deletado com sucesso!");
+      handleOpenToast("Jogo deletado com sucesso!", "success");
     } catch (err) {
       console.log(err);
-      console.log("Erro ao deletar jogo :(");
+      handleOpenToast("Erro ao deletar jogo :(", "error");
     }
   }
 
   return (
-    <Dialog.Portal>
-      <Dialog.Overlay className="bg-black/80 inset-0 fixed z-[2]" />
-      <Dialog.Content className="w-4/5 h-fit-content fixed z-[2] bg-[#2A2634] py-6 px-4 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-lg shadow-black/25 flex flex-col justify-between">
-        <Dialog.Title className="font-semibold text-2xl">
-          {edit ? "Editar jogo" : "Salvar jogo"}
-        </Dialog.Title>
+    <>
+      <Dialog.Portal>
+        <Dialog.Overlay className="bg-black/80 inset-0 fixed z-[2]" />
+        <Dialog.Content className="w-4/5 h-fit-content fixed z-[2] bg-[#2A2634] py-6 px-4 text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-lg shadow-black/25 flex flex-col justify-between">
+          <Dialog.Title className="font-semibold text-2xl">
+            {edit ? "Editar jogo" : "Salvar jogo"}
+          </Dialog.Title>
 
-        <GameStatus status={gameStatus} updateStatus={setGameStatus} />
+          <GameStatus status={gameStatus} updateStatus={setGameStatus} />
 
-        <PlatformSelect
-          platform={gamePlatform}
-          updatePlatform={setGamePlatform}
-          disabled={edit ? true : false}
-        />
+          <PlatformSelect
+            platform={gamePlatform}
+            updatePlatform={setGamePlatform}
+            disabled={edit ? true : false}
+          />
 
-        <div className="flex items-center justify-end gap-4 mt-10">
-          {edit && (
-            <button
-              type="button"
-              onClick={() => handleDeleteGame()}
-              className="bg-red-500 py-1 px-3 rounded flex justify-center items-center"
+          <div className="flex items-center justify-end gap-4 mt-10">
+            {edit && (
+              <button
+                type="button"
+                onClick={() => handleDeleteGame()}
+                className="bg-red-500 py-1 px-3 rounded flex justify-center items-center"
+              >
+                Deletar jogo
+              </button>
+            )}
+
+            <Dialog.Cancel
+              onClick={() => resetDialog()}
+              className="bg-gray-500 py-1 px-3 rounded flex justify-center items-center"
             >
-              Deletar jogo
+              Fechar
+            </Dialog.Cancel>
+
+            <button
+              className="bg-violet-600 py-1 px-3 rounded flex justify-center items-center"
+              type="submit"
+              onClick={edit ? handleEditGame : handleSaveGame}
+            >
+              Salvar
             </button>
-          )}
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
 
-          <Dialog.Cancel
-            onClick={() => resetDialog()}
-            className="bg-gray-500 py-1 px-3 rounded flex justify-center items-center"
-          >
-            Fechar
-          </Dialog.Cancel>
-
-          <button
-            className="bg-violet-600 py-1 px-3 rounded flex justify-center items-center"
-            type="submit"
-            onClick={edit ? handleEditGame : handleSaveGame}
-          >
-            Salvar
-          </button>
-        </div>
-      </Dialog.Content>
-    </Dialog.Portal>
+      <ToastMessage
+        openToast={openToast}
+        setOpenToast={setOpenToast}
+        title={toastTitle}
+        status={toastStatus}
+      />
+    </>
   );
 }
 

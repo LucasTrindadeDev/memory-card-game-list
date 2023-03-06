@@ -44,7 +44,7 @@ app.post("/user/:id/save-game", async (req, res) => {
 
 app.post("/user/:id/saved-games", async (req, res) => {
   const userId = req.params.id;
-  const status = req.body.status;
+  const { status, take } = req.body;
 
   const games = await prisma.game.findMany({
     select: {
@@ -61,9 +61,11 @@ app.post("/user/:id/saved-games", async (req, res) => {
     orderBy: {
       name: "asc",
     },
+    take,
   });
 
-  return res.status(200).json(games);
+
+  return res.status(200).json({ games });
 });
 
 app.get("/user/:userId/saved-games/:id", async (req, res) => {

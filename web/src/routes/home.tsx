@@ -12,7 +12,7 @@ import {
 import GameCard from "../components/GameCard";
 import Filters from "../components/Filters";
 
-import { SavedGame, Status } from "../types";
+import { SavedGame, Status, TwitchGame } from "../types";
 
 export default function Home() {
   const statusList = [
@@ -43,31 +43,37 @@ export default function Home() {
     },
   ];
 
+  const [numResults, setNumResults] = useState<number>(10);
   const [activeStatus, setActiveStatus] = useState<string>("quero-jogar");
   const [gameList, setGameList] = useState<SavedGame[]>([]);
   const [platformFilter, setPlatformFilter] = useState<string>("todas");
 
   useEffect(() => {
-    const userId = "18f882fc-5e4e-4b78-adb3-8104814ec8e4";
-
-    const loadGames = async () => {
-      const response = await axios
-        .post(`http://localhost:3333/user/${userId}/saved-games`, {
-          status: activeStatus,
-        })
-        .then((response) => {
-          if (!response.data) return;
-
-          setGameList(response.data);
-        });
-    };
-
     loadGames();
   }, [activeStatus]);
 
   useEffect(() => {
     console.log(platformFilter);
   }, [platformFilter]);
+
+  async function loadGames() {
+    const userId = "18f882fc-5e4e-4b78-adb3-8104814ec8e4";
+
+    const response = await axios
+      .post(`http://localhost:3333/user/${userId}/saved-games`, {
+        status: activeStatus,
+        take: numResults,
+      })
+      .then((response) => {
+        if (!response.data.games) return;
+
+        if (gameList.length === 0) {
+          setGameList(response.data.games);
+        } else {
+          setGameList((gameList) => gameList.concat(response.data.games));
+        }
+      });
+  }
 
   function handleTabClick(status: string) {
     setActiveStatus(status);
@@ -102,7 +108,11 @@ export default function Home() {
         </Tabs.List>
         {statusList.map((status: Status) => {
           return (
-            <Tabs.Content value={status.name} key={status.name}>
+            <Tabs.Content
+              value={status.name}
+              key={status.name}
+              className="flex flex-col"
+            >
               <Filters setPlatformFilter={setPlatformFilter} />
 
               <ul className="my-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
@@ -114,6 +124,14 @@ export default function Home() {
                     <GameCard key={game.id} game={game} />
                   ))}
               </ul>
+
+              <button
+                type="button"
+                className="bg-violet-500 text-white rounded-lg py-2 px-3 self-center my-10"
+                onClick={() => loadGames()}
+              >
+                Carregar mais
+              </button>
             </Tabs.Content>
           );
         })}

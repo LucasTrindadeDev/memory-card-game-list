@@ -33,6 +33,7 @@ export default function Filters({
   return (
     <ul className="mt-6 mb-2 flex items-center">
       <li
+        key="todas"
         onClick={() => handlePlatformClick("todas")}
         className={`py-1 px-2 hover:py-2 hover:px-3 rounded m-1 ease-in-out transition-all ${
           activePlatform === "todas"
@@ -45,6 +46,7 @@ export default function Filters({
 
       {platforms.map((platform) => (
         <li
+          key={platform}
           onClick={() => handlePlatformClick(platform)}
           className={`py-1 px-2 hover:py-2 hover:px-3 rounded m-1 ease-in-out transition-all ${
             activePlatform === platform

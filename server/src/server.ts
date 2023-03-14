@@ -12,6 +12,27 @@ const prisma = new PrismaClient({
   log: ["query"],
 });
 
+app.post("/register", async (req, res) => {
+  const body: any = req.body;
+
+  const userAlreadyRegistered = await prisma.user.findUnique({
+    where: {
+      email: body.email,
+    },
+  });
+
+  if (userAlreadyRegistered) return res.status(401).send("USER ALREADY REGISTERED");
+
+  const user = await prisma.user.create({
+    data: {
+      name: body.name,
+      email: body.email,
+    },
+  });
+
+  return res.status(200).json(user);
+});
+
 app.post("/user/:id/save-game", async (req, res) => {
   const userId: string = req.params.id;
   const body: any = req.body;

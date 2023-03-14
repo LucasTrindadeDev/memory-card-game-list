@@ -1,8 +1,10 @@
 import { createContext } from "react";
 
-import { TwitchGame, SavedGame } from "../types";
+import { UserI, TwitchGame, SavedGame } from "../types";
 
 export type App = {
+  user: UserI | undefined;
+  setUser: (user: UserI) => void;
   selectedGame: TwitchGame | SavedGame | undefined;
   setSelectedGame: (game: TwitchGame | SavedGame | undefined) => void;
   openDialog: boolean;
@@ -10,6 +12,8 @@ export type App = {
 };
 
 export const AppContext = createContext<App>({
+  user: undefined,
+  setUser: () => {},
   selectedGame: undefined,
   setSelectedGame: () => {},
   openDialog: false,

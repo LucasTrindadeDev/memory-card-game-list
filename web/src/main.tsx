@@ -8,12 +8,17 @@ import Root from "./routes/root";
 import Home from "./routes/home";
 import Search from "./routes/search";
 import Profile from "./routes/profile";
+import SignUp from "./routes/signup";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     children: [
+      {
+        path: "/sign-up",
+        element: <SignUp />,
+      },
       {
         path: "/",
         element: <Home />,

@@ -1,3 +1,9 @@
+export interface UserI {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export interface TwitchGame {
   id: string;
   name: string;

@@ -4,11 +4,13 @@ import { MagnifyingGlassPlus, GameController, User } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-alert-dialog";
 import * as Toast from "@radix-ui/react-toast";
 
-import { TwitchGame, SavedGame } from "../types";
+import { UserI, TwitchGame, SavedGame } from "../types";
 import { AppContext } from "../contexts/AppContext";
 import SavedGameDialog from "../components/SaveGameDialog";
 
 function Root() {
+  const [user, setUser] = useState<UserI | undefined>();
+
   const [selectedGame, setSelectedGame] = useState<
     TwitchGame | SavedGame | undefined
   >();
@@ -19,7 +21,14 @@ function Root() {
     <div className="w-full h-screen flex flex-col bg-zinc-800">
       <div className="w-full grow overflow-auto">
         <AppContext.Provider
-          value={{ selectedGame, setSelectedGame, openDialog, setOpenDialog }}
+          value={{
+            user,
+            setUser,
+            selectedGame,
+            setSelectedGame,
+            openDialog,
+            setOpenDialog,
+          }}
         >
           <Toast.Provider>
             <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>

@@ -21,7 +21,8 @@ app.post("/register", async (req, res) => {
     },
   });
 
-  if (userAlreadyRegistered) return res.status(401).send("USER ALREADY REGISTERED");
+  if (userAlreadyRegistered)
+    return res.status(401).send("USER ALREADY REGISTERED");
 
   const user = await prisma.user.create({
     data: {
@@ -84,7 +85,6 @@ app.post("/user/:id/saved-games", async (req, res) => {
     },
     take,
   });
-
 
   return res.status(200).json({ games });
 });
